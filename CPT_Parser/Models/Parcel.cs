@@ -8,7 +8,7 @@ using System.Drawing;
 namespace CPT_Parser.Models
 {
   
-    class Parcel
+    class Parcel : CadastralObject
     {
         public (string, string) type;
         internal (string, string) subtype;

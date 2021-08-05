@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace CPT_Parser.Models
 {
-    class SpatialData
+    class SpatialData : CadastralObject
     {
         public struct Geopoint
         {

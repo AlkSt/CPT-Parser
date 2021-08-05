@@ -11,23 +11,40 @@ namespace CPT_Parser
     {
         public Data()
         {
-            
+            //можно записать в конструктор по отдельности
         }
-        Dictionary<string, Parcel> ParcelElenents;
-        Dictionary<string, Construction> ConstructionElenents;
-        SpatialData SpatialElenents;
-        Dictionary<string, Bound> BoundElenents;
-        Dictionary<string, Zone> ZoneElenents;
+        Dictionary<string, CadastralObject> ParcelElenents;
+        Dictionary<string, CadastralObject> ConstructionElenents;
+        Dictionary<string, CadastralObject> SpatialElenents;
+        Dictionary<string, CadastralObject> BoundElenents;
+        Dictionary<string, CadastralObject> ZoneElenents;
 
         public void UploadData()
         {
             (ParcelElenents, ConstructionElenents,  SpatialElenents, BoundElenents, ZoneElenents) = Parseable.ParsingData();
         }
 
-        public Dictionary<string, Parcel> getParcel() => ParcelElenents;
-        public Dictionary<string, Construction> getObjectRealty() => ConstructionElenents;
-        public SpatialData getSpatial() => SpatialElenents;
-        public Dictionary<string, Bound> getBound() => BoundElenents;
-        public Dictionary<string, Zone> getZone() => ZoneElenents;
+        public Dictionary<string, CadastralObject> getParcel() => ParcelElenents;
+        public Dictionary<string, CadastralObject> getObjectRealty() => ConstructionElenents;
+        public Dictionary<string, CadastralObject> getSpatial() => SpatialElenents;
+        public Dictionary<string, CadastralObject> getBound() => BoundElenents;
+        public Dictionary<string, CadastralObject> getZone() => ZoneElenents;
+
+        public CadastralObject getObject(string id)
+        {
+            if (ParcelElenents.ContainsKey(id))
+                return ParcelElenents[id];
+            else if (ConstructionElenents.ContainsKey(id))
+                return ConstructionElenents[id];
+            else if (SpatialElenents.ContainsKey(id))
+                return SpatialElenents[id];
+            else if (BoundElenents.ContainsKey(id))
+                return BoundElenents[id];
+            else if (ZoneElenents.ContainsKey(id))
+                return ZoneElenents[id];
+            else return null;
+
+
+        }
     }
 }

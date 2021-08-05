@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CPT_Parser.Models
 {
-    class Bound
+    class Bound:CadastralObject
     {
         public Bound()
         {

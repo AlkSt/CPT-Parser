@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CPT_Parser.Models
 {
 
-    class Zone
+    class Zone : CadastralObject
     {
         public string registrationDate;
         public string registrationNumber;

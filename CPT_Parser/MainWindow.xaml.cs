@@ -31,63 +31,44 @@ namespace CPT_Parser
             Parseable.ParsingData();
         }
 
-        public delegate void InitDel(object sender, RoutedEventArgs e);
+        //public delegate void InitDel(object sender, RoutedEventArgs e);
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             elementsDataSet.UploadData();
             var lannds = elementsDataSet.getParcel();
             foreach (var elemId in lannds.Keys)
-                InitItem(elemId, ParcelItem, ParcelElement_Selected);
+                InitItem(elemId, ParcelItem);
 
             var builds = elementsDataSet.getObjectRealty();
             foreach (var elemId in builds.Keys)
-                InitItem(elemId, ObjectRealtyItem, ObjectRealtyElement_Selected);
+                InitItem(elemId, ObjectRealtyItem);
 
             var spatial = elementsDataSet.getSpatial();
-            InitItem(spatial.skId, SpatialDataItem, SpatialElement_Selected);
+            foreach (var elemId in spatial.Keys)
+                InitItem(elemId, SpatialDataItem);
 
             var bound = elementsDataSet.getBound();
             foreach (var elemId in bound.Keys)
-                InitItem(elemId, BoundItem, BoundElement_Selected);
+                InitItem(elemId, BoundItem);
 
             var zones = elementsDataSet.getZone();
             foreach (var elemId in zones.Keys)
-                InitItem(elemId, ZoneItem, ZoneElement_Selected);
+                InitItem(elemId, ZoneItem);
             
         }
 
-        public void InitItem(string header, TreeViewItem viewItem, InitDel Element_Selected)
+        public void InitItem(string header, TreeViewItem viewItem)
         {
             var item = new TreeViewItem(); 
             item.Header = header;
-            item.AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(Element_Selected));
+            item.AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(ObjectElement_Selected));
             viewItem.Items.Add(item);
         }
 
-        private void ZoneElement_Selected(object sender, RoutedEventArgs e)
+        private void ObjectElement_Selected(object sender, RoutedEventArgs e)
         {
             TreeViewItem tvItem = (TreeViewItem)sender;
-            DataTextBox.Text = elementsDataSet.getZone()[tvItem.Header.ToString()].ToString();
-        }
-        private void BoundElement_Selected(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem tvItem = (TreeViewItem)sender;
-            DataTextBox.Text = elementsDataSet.getBound()[tvItem.Header.ToString()].ToString();
-        }
-        private void SpatialElement_Selected(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem tvItem = (TreeViewItem)sender;
-            DataTextBox.Text = elementsDataSet.getSpatial().ToString();
-        }
-        private void ParcelElement_Selected(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem tvItem = (TreeViewItem)sender;
-            DataTextBox.Text = elementsDataSet.getParcel()[tvItem.Header.ToString()].ToString();
-        }
-        private void ObjectRealtyElement_Selected(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem tvItem = (TreeViewItem)sender;
-            DataTextBox.Text = elementsDataSet.getObjectRealty()[tvItem.Header.ToString()].ToString();
+            DataTextBox.Text = elementsDataSet.getObject(tvItem.Header.ToString()).ToString();
         }
     }
 }

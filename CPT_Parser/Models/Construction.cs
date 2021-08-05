@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPT_Parser.Models
 {
-    class Construction
+    class Construction : CadastralObject
     {
         public string cadNumber;
         public (string, string) purpose;

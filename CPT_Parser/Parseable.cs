@@ -11,7 +11,7 @@ namespace CPT_Parser
 {
     class Parseable
     {
-        static public (Dictionary<string, Parcel>, Dictionary<string, Construction>, SpatialData, Dictionary<string, Bound>, Dictionary<string, Zone>) ParsingData()
+        static public (Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>) ParsingData()
         {
             var fileXML = "\\CPT_Parser\\CPT_Parser\\datakpt11.xml";
             XDocument docXML = XDocument.Load(fileXML); // загрузить XML
@@ -19,15 +19,16 @@ namespace CPT_Parser
             var newdata = data.Element("cadastral_number").Value;
             var land = ParsingLand(data.Element("record_data").Element("base_data"));
             var construction = ParsingObjectRealty(data.Element("record_data").Element("base_data"));
-            var spat = ParsingSpatial(data.Element("spatial_data").Element("entity_spatial"));
+            var r = ParsingSpatial(data.Element("spatial_data").Element("entity_spatial"));
+            var spat = new Dictionary<string, CadastralObject> { { r.skId, r } };
             var bound = ParsingBound(data.Element("municipal_boundaries"));
             var zone = ParsingZone(data.Element("zones_and_territories_boundaries"));
             return (land, construction, spat, bound, zone);
         }
 
-        static public Dictionary<string, Parcel> ParsingLand(XElement xdoc)
+        static public Dictionary<string, CadastralObject> ParsingLand(XElement xdoc)
         {
-            var resList = new Dictionary<string,Parcel>();
+            var resList = new Dictionary<string, CadastralObject>();
             foreach (var construction in xdoc.Element("land_records").Elements("land_record"))
             {
                 var parcel = new Parcel();
@@ -81,7 +82,7 @@ namespace CPT_Parser
             return resList;
         }
 
-        static public Dictionary<string, Construction> ParsingObjectRealty(XElement xdoc)
+        static public Dictionary<string, CadastralObject> ParsingObjectRealty(XElement xdoc)
         {
             var construstion = ParsingConsruction(xdoc);
             var build = ParsingBuild(xdoc);
@@ -89,9 +90,9 @@ namespace CPT_Parser
                 construstion.Add(item.Key, item.Value);
             return construstion;
         }
-        static public Dictionary<string, Build> ParsingBuild(XElement xdoc)
+        static public Dictionary<string, CadastralObject> ParsingBuild(XElement xdoc)
         {
-            var resList = new Dictionary<string, Build>();
+            var resList = new Dictionary<string, CadastralObject>();
             foreach (var buildEl in xdoc.Element("build_records").Elements("build_record"))
             {
                 var build = new Build();
@@ -132,9 +133,9 @@ namespace CPT_Parser
             }
             return resList;
         }
-        static public Dictionary<string,Construction> ParsingConsruction(XElement xdoc)
+        static public Dictionary<string, CadastralObject> ParsingConsruction(XElement xdoc)
         {
-            var resList = new Dictionary<string, Construction>();
+            var resList = new Dictionary<string, CadastralObject>();
             foreach (var constructionEl in xdoc.Element("construction_records").Elements("construction_record"))
             {
                 var construction = new Construction();
@@ -150,9 +151,9 @@ namespace CPT_Parser
             }
             return resList;
         }
-        static public Dictionary<string, Zone> ParsingZone(XElement xdoc)
+        static public Dictionary<string, CadastralObject> ParsingZone(XElement xdoc)
         {
-            var resList = new Dictionary<string, Zone>();
+            var resList = new Dictionary<string, CadastralObject>();
             foreach (var zoneEl in xdoc.Elements("zones_and_territories_record"))
             {
                 var zone = new Zone();
@@ -176,9 +177,9 @@ namespace CPT_Parser
             return resList;
         }
 
-        static public Dictionary<string,Bound> ParsingBound(XElement xdoc)
+        static public Dictionary<string, CadastralObject> ParsingBound(XElement xdoc)
         {
-            var resList = new Dictionary<string, Bound>();
+            var resList = new Dictionary<string, CadastralObject>();
             foreach (var boundEl in xdoc.Elements("municipal_boundary_record"))
             {
                 var bound = new Bound();

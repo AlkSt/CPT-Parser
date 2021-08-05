@@ -68,6 +68,7 @@
     <Compile Include="Models\Adress.cs" />
     <Compile Include="Models\Bound.cs" />
     <Compile Include="Models\Build.cs" />
+    <Compile Include="Models\CadastralObject.cs" />
     <Compile Include="Models\Construction.cs" />
     <Compile Include="Models\SpatialData.cs" />
     <Compile Include="Models\Zone.cs" />
