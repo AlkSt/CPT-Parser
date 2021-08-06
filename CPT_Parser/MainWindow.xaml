@@ -6,17 +6,36 @@
         xmlns:local="clr-namespace:CPT_Parser"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TreeViewItemStyle" TargetType="TreeViewItem">
+                <Setter Property="IsExpanded" Value="False" />
+                <Setter Property="IsSelected" Value="{Binding IsInitiallySelected, Mode=OneTime}" />
+                <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
+            </Style>
+            <HierarchicalDataTemplate x:Key="CheckBoxItemTemplate" ItemsSource="{Binding Children, Mode=OneTime}" >
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Focusable="False" IsChecked="{Binding IsChecked}" VerticalAlignment="Center" />
+                    <Label Content="{Binding Name, Mode=OneTime}" Margin="0" MouseDoubleClick="ObjectElement_Selected"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid Loaded="Grid_Loaded">
+        <TreeView Height="368" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="treeElementsView" VerticalAlignment="Top" Width="308" 
+                  ItemContainerStyle="{StaticResource TreeViewItemStyle}"
+                  ItemTemplate="{StaticResource CheckBoxItemTemplate}" />
         <Button Content="Button" HorizontalAlignment="Left" Margin="608,359,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TreeView Height="368" HorizontalAlignment="Left" Margin="18,18,0,0" x:Name="treeView1" VerticalAlignment="Top" Width="287">
+        <!--<TreeView Height="368" HorizontalAlignment="Left" Margin="18,18,0,0" x:Name="treeView1" VerticalAlignment="Top" Width="287">
             <TreeViewItem Name="ParcelItem" Header="Parcel"/>
-            <!--Selected="ParcelItem_Selected"-->
+            -->
+        <!--Selected="ParcelItem_Selected"-->
+        <!--
             <TreeViewItem Name="ObjectRealtyItem" Header="ObjectRealty"/>
             <TreeViewItem Name="SpatialDataItem" Header="SpatialData"/>
             <TreeViewItem Name="BoundItem" Header="Bound"/>
             <TreeViewItem Name="ZoneItem" Header="Zone"/>
-        </TreeView>
+        </TreeView>-->
         <TextBox Name ="DataTextBox"  HorizontalAlignment="Left" Height="310" Margin="362,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="387"/>
 
     </Grid>

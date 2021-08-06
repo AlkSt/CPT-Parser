@@ -28,47 +28,26 @@ namespace CPT_Parser
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Parseable.ParsingData();
+            var treeEnumerator = treeElementsView.ItemsSource.GetEnumerator();
+            treeEnumerator.MoveNext();
+            var rootTreeElement = treeEnumerator.Current as TreeViewModel;
+            var selectedNode = TreeViewModel.GetSelectedChildElements(rootTreeElement);
+            string s = "Выбраны\r\n";
+            foreach (var item in selectedNode)
+                s += item + "\r\n";
+            DataTextBox.Text = s;
         }
 
-        //public delegate void InitDel(object sender, RoutedEventArgs e);
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            elementsDataSet.UploadData();
-            var lannds = elementsDataSet.getParcel();
-            foreach (var elemId in lannds.Keys)
-                InitItem(elemId, ParcelItem);
-
-            var builds = elementsDataSet.getObjectRealty();
-            foreach (var elemId in builds.Keys)
-                InitItem(elemId, ObjectRealtyItem);
-
-            var spatial = elementsDataSet.getSpatial();
-            foreach (var elemId in spatial.Keys)
-                InitItem(elemId, SpatialDataItem);
-
-            var bound = elementsDataSet.getBound();
-            foreach (var elemId in bound.Keys)
-                InitItem(elemId, BoundItem);
-
-            var zones = elementsDataSet.getZone();
-            foreach (var elemId in zones.Keys)
-                InitItem(elemId, ZoneItem);
+            treeElementsView.ItemsSource = TreeViewModel.SetTree("Top Level" , elementsDataSet);           
             
-        }
-
-        public void InitItem(string header, TreeViewItem viewItem)
-        {
-            var item = new TreeViewItem(); 
-            item.Header = header;
-            item.AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(ObjectElement_Selected));
-            viewItem.Items.Add(item);
         }
 
         private void ObjectElement_Selected(object sender, RoutedEventArgs e)
         {
-            TreeViewItem tvItem = (TreeViewItem)sender;
-            DataTextBox.Text = elementsDataSet.getObject(tvItem.Header.ToString()).ToString();
+            var tvItem = (Label)sender;
+            DataTextBox.Text = elementsDataSet.getObject(tvItem.Content.ToString()).ToString();
         }
     }
 }
