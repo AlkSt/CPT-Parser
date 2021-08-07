@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace CPT_Parser.Models
 {
-    class SpatialData : CadastralObject
+    [Serializable]
+    public class SpatialData : CadastralObject
     {
-        public struct Geopoint
+        public struct Geopoint : IXmlSerializable
         {
-            public Geopoint(double x, double y, object [] param)
+            public Geopoint(double x, double y, object[] param)
             {
                 this.x = x;
                 this.y = y;
@@ -31,14 +35,40 @@ namespace CPT_Parser.Models
             public string opredVal;
             public double delta;
 
+            public XmlSchema GetSchema()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void ReadXml(XmlReader reader)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void WriteXml(XmlWriter writer)
+            {
+                writer.WriteElementString("x", x.ToString());
+                writer.WriteElementString("y", y.ToString());
+                if (geoNum != "-")
+                    writer.WriteElementString("geo_num", geoNum);
+                if (geoZcrep != "-")
+                    writer.WriteElementString("geo_zcrep", geoZcrep);
+                if (opredCode != "-")
+                    writer.WriteElementString("opred_code", opredCode);
+                if (opredVal != "-")
+                    writer.WriteElementString("opred_val", opredVal);
+                if (delta != 0)
+                    writer.WriteElementString("delta", delta.ToString());
+
+            }
         }
 
         public string skId;
-        public Dictionary<int, Geopoint> Ordinates;
+        public SerializableDictionary<int, Geopoint> Ordinates;
 
         public SpatialData()
         {
-            Ordinates = new Dictionary<int, Geopoint>();
+            Ordinates = new SerializableDictionary<int, Geopoint>();
         }
 
         public void AddOrdinate(double x, double y, int num = -1, params object[] param)
@@ -51,10 +81,11 @@ namespace CPT_Parser.Models
 
         public override string ToString()
         {
-            string str = "Идентификатор skId: " + skId;
+            string str = "Пространственные данные: "
+                + "\r\n\rИдентификатор skId: " + skId;
             foreach (var ordinate in Ordinates.Keys)
             {
-                str += "\r\n\rТочка:" + ordinate;
+                str += "\r\nТочка: " + ordinate;
                 str += "\r\nКоординаты: (" + Ordinates[ordinate].x + " ; " + Ordinates[ordinate].y + ")";
                 if (Ordinates[ordinate].geoNum != "-") str += "\r\nНомер: " + Ordinates[ordinate].geoNum;
                 if (Ordinates[ordinate].geoZcrep != "-") str += "\r\nЗакрепление: " + Ordinates[ordinate].geoZcrep;

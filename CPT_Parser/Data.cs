@@ -43,8 +43,6 @@ namespace CPT_Parser
             else if (ZoneElenents.ContainsKey(id))
                 return ZoneElenents[id];
             else return null;
-
-
         }
     }
 }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace CPT_Parser.Models
 {
-    class CadastralObject
+    [Serializable]
+    public class CadastralObject
     {
+        public CadastralObject() { }
         public string cadastralNumber;
 
     }

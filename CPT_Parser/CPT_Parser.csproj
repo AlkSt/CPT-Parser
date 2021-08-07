@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SavedXMLFileDialog.cs" />
+    <Compile Include="Serialize\SerializableDictionary.cs" />
+    <Compile Include="Serialize\SreializableKeyValue.cs" />
     <Compile Include="TreeViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

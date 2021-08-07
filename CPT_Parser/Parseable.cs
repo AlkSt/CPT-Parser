@@ -1,4 +1,5 @@
 ﻿using CPT_Parser.Models;
+using CPT_Parser.Serialize;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace CPT_Parser
             var fileXML = "\\CPT_Parser\\CPT_Parser\\datakpt11.xml";
             XDocument docXML = XDocument.Load(fileXML); // загрузить XML
             var data = docXML.Element("extract_cadastral_plan_territory").Element("cadastral_blocks").Element("cadastral_block");
-            var newdata = data.Element("cadastral_number").Value;
+            
             var land = ParsingLand(data.Element("record_data").Element("base_data"));
             var construction = ParsingObjectRealty(data.Element("record_data").Element("base_data"));
             var r = ParsingSpatial(data.Element("spatial_data").Element("entity_spatial"));
@@ -161,6 +162,7 @@ namespace CPT_Parser
 
                 var xombSection = zoneEl.Element("b_object_zones_and_territories").Element("b_object");
                 zone.registrationNumber = xombSection.Element("reg_numb_border").Value;
+
                 zone.typeBound.Item1 = xombSection.Element("type_boundary").Element("code").Value;
                 zone.typeBound.Item2 = xombSection.Element("type_boundary").Element("value").Value;
 

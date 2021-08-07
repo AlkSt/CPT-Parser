@@ -120,18 +120,21 @@ namespace CPT_Parser
             foreach (var elemId in elements.Keys)
                 viewItem.Children.Add(new TreeViewModel(elemId));
         }
-        public static List<string> GetSelectedChildElements(TreeViewModel TreeViewRoot)
+        public static List<List<string>> GetSelectedChildElements(TreeViewModel TreeViewRoot)
         {
-            List<string> selected = new List<string>();
+            List<List<string>> selectedGroup = new List<List<string>>();
             foreach (var group in TreeViewRoot.Children)
             {
+                List<string> selected = new List<string>();
                 foreach (var element in group.Children)
-                {
-                    if (element.IsChecked == true) selected.Add(element.Name);
-                }
+                    if (element.IsChecked == true)
+                        selected.Add(element.Name);
+
+                if (selected.Count > 0)
+                    selectedGroup.Add(selected);
             }
 
-            return selected;
+            return selectedGroup;
         }
 
         #region INotifyPropertyChanged Members

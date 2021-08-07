@@ -16,7 +16,7 @@
             <HierarchicalDataTemplate x:Key="CheckBoxItemTemplate" ItemsSource="{Binding Children, Mode=OneTime}" >
                 <StackPanel Orientation="Horizontal">
                     <CheckBox Focusable="False" IsChecked="{Binding IsChecked}" VerticalAlignment="Center" />
-                    <Label Content="{Binding Name, Mode=OneTime}" Margin="0" MouseDoubleClick="ObjectElement_Selected"/>
+                    <Label Content="{Binding Name, Mode=OneTime}" Margin="0" MouseDoubleClick="ObjectElement_DoubleClickSelected"/>
                 </StackPanel>
             </HierarchicalDataTemplate>
         </ResourceDictionary>
@@ -25,17 +25,7 @@
         <TreeView Height="368" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="treeElementsView" VerticalAlignment="Top" Width="308" 
                   ItemContainerStyle="{StaticResource TreeViewItemStyle}"
                   ItemTemplate="{StaticResource CheckBoxItemTemplate}" />
-        <Button Content="Button" HorizontalAlignment="Left" Margin="608,359,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <!--<TreeView Height="368" HorizontalAlignment="Left" Margin="18,18,0,0" x:Name="treeView1" VerticalAlignment="Top" Width="287">
-            <TreeViewItem Name="ParcelItem" Header="Parcel"/>
-            -->
-        <!--Selected="ParcelItem_Selected"-->
-        <!--
-            <TreeViewItem Name="ObjectRealtyItem" Header="ObjectRealty"/>
-            <TreeViewItem Name="SpatialDataItem" Header="SpatialData"/>
-            <TreeViewItem Name="BoundItem" Header="Bound"/>
-            <TreeViewItem Name="ZoneItem" Header="Zone"/>
-        </TreeView>-->
+        <Button Content="Сохранить xml" HorizontalAlignment="Left" Margin="608,359,0,0" VerticalAlignment="Top" Width="98" Click="Button_Click" Height="21"/>
         <TextBox Name ="DataTextBox"  HorizontalAlignment="Left" Height="310" Margin="362,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="387"/>
 
     </Grid>
