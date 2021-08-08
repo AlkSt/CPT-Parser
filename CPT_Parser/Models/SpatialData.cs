@@ -82,7 +82,7 @@ namespace CPT_Parser.Models
         public override string ToString()
         {
             string str = "Пространственные данные: "
-                + "\r\n\rИдентификатор skId: " + skId;
+                + "\r\nИдентификатор skId: " + skId;
             foreach (var ordinate in Ordinates.Keys)
             {
                 str += "\r\nТочка: " + ordinate;

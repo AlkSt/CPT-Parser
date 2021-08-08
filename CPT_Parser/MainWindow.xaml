@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CPT_Parser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Cadastral objects" Height="450" Width="800">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="TreeViewItemStyle" TargetType="TreeViewItem">
@@ -14,19 +14,29 @@
                 <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
             </Style>
             <HierarchicalDataTemplate x:Key="CheckBoxItemTemplate" ItemsSource="{Binding Children, Mode=OneTime}" >
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox Focusable="False" IsChecked="{Binding IsChecked}" VerticalAlignment="Center" />
-                    <Label Content="{Binding Name, Mode=OneTime}" Margin="0" MouseDoubleClick="ObjectElement_DoubleClickSelected"/>
+                <StackPanel Orientation="Horizontal"  Margin="0">
+                    <CheckBox Focusable="False" IsChecked="{Binding IsChecked}" VerticalAlignment="Center" Margin="0" />
+                    <Label Content="{Binding Name, Mode=OneTime}" Padding="2px" MouseDoubleClick="ObjectElement_DoubleClickSelected"/>
                 </StackPanel>
             </HierarchicalDataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Loaded="Grid_Loaded">
-        <TreeView Height="368" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="treeElementsView" VerticalAlignment="Top" Width="308" 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.75*"/>
+            <ColumnDefinition Width="0.05*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" x:Name="treeElementsView"  Margin="15, 15 ,0, 0"
                   ItemContainerStyle="{StaticResource TreeViewItemStyle}"
                   ItemTemplate="{StaticResource CheckBoxItemTemplate}" />
-        <Button Content="Сохранить xml" HorizontalAlignment="Left" Margin="608,359,0,0" VerticalAlignment="Top" Width="98" Click="Button_Click" Height="21"/>
-        <TextBox Name ="DataTextBox"  HorizontalAlignment="Left" Height="310" Margin="362,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="387"/>
+        <TextBox Grid.Row="0" Grid.Column="2" Name ="DataTextBox" TextWrapping="Wrap" Margin="0, 15, 15, 0" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True"/>
+        <Button  Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content=" Сохранить объекты" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,25,0"  FontSize="16" Click="Button_Click"/>
 
     </Grid>
 </Window>

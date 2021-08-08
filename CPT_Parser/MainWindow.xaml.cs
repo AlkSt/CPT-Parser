@@ -92,7 +92,15 @@ namespace CPT_Parser
         private void ObjectElement_DoubleClickSelected(object sender, RoutedEventArgs e)
         {
             var tvItem = (Label)sender;
-            DataTextBox.Text = elementsDataSet.getObject(tvItem.Content.ToString()).ToString();
+            try
+            {
+                DataTextBox.Text = elementsDataSet.getObject(tvItem.Content.ToString()).ToString();
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Для вывода информации выберите один объект, а не группу объектов", 
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
