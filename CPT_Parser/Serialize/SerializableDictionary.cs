@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 public class SerializableDictionary<TKey, TValue>
     : Dictionary<TKey, TValue>, IXmlSerializable
 {
-    #region IXmlSerializable Members
     public System.Xml.Schema.XmlSchema GetSchema()
     {
         return null;
@@ -53,9 +52,9 @@ public class SerializableDictionary<TKey, TValue>
         {
             writer.WriteStartElement("ordinate");
 
-            writer.WriteElementString("ordinate_number", key.ToString());
+            writer.WriteElementString("ordinateNumber", key.ToString());
 
-            writer.WriteStartElement("ordinate_value");
+            writer.WriteStartElement("ordinateValue");
             TValue value = this[key];
             valueSerializer.Serialize(writer, value);
             writer.WriteEndElement();
@@ -63,5 +62,4 @@ public class SerializableDictionary<TKey, TValue>
             writer.WriteEndElement();
         }
     }
-    #endregion
 }

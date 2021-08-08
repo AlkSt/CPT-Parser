@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace CPT_Parser.Models
 {
     [Serializable]
-    public class Adress
+    public class Adress: IXmlSerializable
     {
         public Adress()
         {
@@ -45,6 +48,54 @@ namespace CPT_Parser.Models
             if (other != "-") str += "\r\nДополнительно: " + other;
             if (readableAddress != "-") str += "\r\nПолный адрес: " + readableAddress;
             return str;
+        }
+
+        public XmlSchema GetSchema()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            XmlSerializer pairSerializer = new XmlSerializer(typeof(SreializableKeyValue<string, string>));
+
+            writer.WriteElementString("okato", okato);
+            writer.WriteElementString("kladr", kladr);
+            if (region.Item2 != "-"){
+                writer.WriteStartElement("region");
+                writer.WriteElementString("type", region.Item1);
+                writer.WriteElementString("value", region.Item2);
+                writer.WriteEndElement();
+            }
+            if (district.Item2 != "-"){
+                writer.WriteStartElement("district");
+                writer.WriteElementString("type", district.Item1);
+                writer.WriteElementString("value", district.Item2);
+                writer.WriteEndElement();
+            }
+            if (locality.Item2 != "-"){
+                writer.WriteStartElement("locality");
+                writer.WriteElementString("type", locality.Item1);
+                writer.WriteElementString("value", locality.Item2);
+                writer.WriteEndElement();
+            }
+            if (street.Item2 != "-"){
+                writer.WriteStartElement("street");
+                writer.WriteElementString("type", street.Item1);
+                writer.WriteElementString("value", street.Item2);
+                writer.WriteEndElement();
+            }
+            if (lavel != "-")
+                writer.WriteElementString("lavel", lavel);
+            if (other != "-")
+                writer.WriteElementString("other", other);
+            if (readableAddress != "-")
+                writer.WriteElementString("readableAddress", readableAddress.ToString());
         }
     }
 }

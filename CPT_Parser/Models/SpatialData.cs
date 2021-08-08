@@ -50,13 +50,13 @@ namespace CPT_Parser.Models
                 writer.WriteElementString("x", x.ToString());
                 writer.WriteElementString("y", y.ToString());
                 if (geoNum != "-")
-                    writer.WriteElementString("geo_num", geoNum);
+                    writer.WriteElementString("geoNum", geoNum);
                 if (geoZcrep != "-")
-                    writer.WriteElementString("geo_zcrep", geoZcrep);
+                    writer.WriteElementString("geoZcrep", geoZcrep);
                 if (opredCode != "-")
-                    writer.WriteElementString("opred_code", opredCode);
+                    writer.WriteElementString("opredCode", opredCode);
                 if (opredVal != "-")
-                    writer.WriteElementString("opred_val", opredVal);
+                    writer.WriteElementString("opredVal", opredVal);
                 if (delta != 0)
                     writer.WriteElementString("delta", delta.ToString());
 

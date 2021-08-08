@@ -23,7 +23,6 @@ namespace CPT_Parser.Models
         }
         public SreializableKeyValue<string, string> type;
         public SreializableKeyValue<string, string> subtype;
-        public string cadNumber;
         public string link;
         public SreializableKeyValue<string, string> category;
         public SreializableKeyValue<string, string> permittedUse;
@@ -37,7 +36,7 @@ namespace CPT_Parser.Models
         {
             string str ="Участок"
                 + "\r\n\rТип участка: " + type.Item1 + " " + type.Item2
-                + "\r\nКадастровый номер : " + cadNumber;
+                + "\r\nКадастровый номер : " + cadastralNumber;
             if (area.Item2 != "-") str += "\r\nПодвид участка: " + subtype.Item1 + " " + subtype.Item2;
             if (area.Item1 != "-") str += "\r\nПлощадь: " + area.Item1;
             if (area.Item2 != "-") str += "\r\nПогрешность: " + area.Item2;

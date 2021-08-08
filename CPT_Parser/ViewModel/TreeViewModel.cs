@@ -16,8 +16,6 @@ namespace CPT_Parser
             Children = new List<TreeViewModel>();
         }
 
-        #region Properties
-
         public string Name { get; private set; }
         public List<TreeViewModel> Children { get; private set; }
         public bool IsInitiallySelected { get; private set; }
@@ -25,7 +23,7 @@ namespace CPT_Parser
         bool? _isChecked = false;
         TreeViewModel _parent;
 
-        #region IsChecked
+
 
         public bool? IsChecked
         {
@@ -67,9 +65,6 @@ namespace CPT_Parser
             SetIsChecked(state, false, true);
         }
 
-        #endregion
-
-        #endregion
 
         void Initialize()
         {
@@ -80,7 +75,7 @@ namespace CPT_Parser
             }
         }
 
-        public static List<TreeViewModel> SetTree(string topLevelName, Data elementsDataSet)
+        public static List<TreeViewModel> SetTree(string topLevelName, DataCadastralSet elementsDataSet)
         {
             List<TreeViewModel> treeView = new List<TreeViewModel>();
             TreeViewModel rootItem = new TreeViewModel(topLevelName);
@@ -92,23 +87,21 @@ namespace CPT_Parser
             TreeViewModel spatialDataItem = new TreeViewModel("SpatialData");
             TreeViewModel boundItem = new TreeViewModel("Bound");
             TreeViewModel zoneItem = new TreeViewModel("Zone");
-
-            elementsDataSet.UploadData();
             
             rootItem.Children.Add(parcelItem);
-            InitItems(elementsDataSet.getParcel(), parcelItem);
+            InitItems(elementsDataSet.ParcelElenents, parcelItem);
 
             rootItem.Children.Add(objectRealtyItem);
-            InitItems(elementsDataSet.getObjectRealty(), objectRealtyItem);
+            InitItems(elementsDataSet.ObjectRealtyElenents, objectRealtyItem);
 
             rootItem.Children.Add(spatialDataItem);
-            InitItems(elementsDataSet.getSpatial(), spatialDataItem);
+            InitItems(elementsDataSet.SpatialElenents, spatialDataItem);
 
             rootItem.Children.Add(boundItem);
-            InitItems(elementsDataSet.getBound(), boundItem);
+            InitItems(elementsDataSet.BoundElenents, boundItem);
 
             rootItem.Children.Add(zoneItem);
-            InitItems(elementsDataSet.getZone(), zoneItem);
+            InitItems(elementsDataSet.ZoneElenents, zoneItem);
 
             rootItem.Initialize();
 
@@ -137,7 +130,6 @@ namespace CPT_Parser
             return selectedGroup;
         }
 
-        #region INotifyPropertyChanged Members
 
         void NotifyPropertyChanged(string info)
         {
@@ -149,6 +141,6 @@ namespace CPT_Parser
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
+
     }
 }

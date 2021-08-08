@@ -10,21 +10,27 @@ using System.Xml.Linq;
 
 namespace CPT_Parser
 {
-    class Parseable
+    class ParseXML
     {
-        static public (Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>, Dictionary<string, CadastralObject>) ParsingData()
+        /// <summary>
+        /// Сбор данных обо всех кадастровох объектах xml файла
+        /// </summary>
+        /// <returns></returns>
+        static public DataCadastralSet ParsingData()
         {
-            var fileXML = "\\CPT_Parser\\CPT_Parser\\datakpt11.xml";
-            XDocument docXML = XDocument.Load(fileXML); // загрузить XML
+            var dataSet = new DataCadastralSet();
+            var fileXML = "..\\..\\datakpt11.xml";
+            XDocument docXML = XDocument.Load(fileXML);
             var data = docXML.Element("extract_cadastral_plan_territory").Element("cadastral_blocks").Element("cadastral_block");
             
-            var land = ParsingLand(data.Element("record_data").Element("base_data"));
-            var construction = ParsingObjectRealty(data.Element("record_data").Element("base_data"));
-            var r = ParsingSpatial(data.Element("spatial_data").Element("entity_spatial"));
-            var spat = new Dictionary<string, CadastralObject> { { r.skId, r } };
-            var bound = ParsingBound(data.Element("municipal_boundaries"));
-            var zone = ParsingZone(data.Element("zones_and_territories_boundaries"));
-            return (land, construction, spat, bound, zone);
+            dataSet.ParcelElenents = ParsingLand(data.Element("record_data").Element("base_data"));
+            dataSet.ObjectRealtyElenents = ParsingObjectRealty(data.Element("record_data").Element("base_data"));
+            var spatElement = ParsingSpatial(data.Element("spatial_data").Element("entity_spatial"));
+            dataSet.SpatialElenents = new Dictionary<string, CadastralObject> { { spatElement.skId, spatElement } };
+            dataSet.BoundElenents = ParsingBound(data.Element("municipal_boundaries"));
+            dataSet.ZoneElenents = ParsingZone(data.Element("zones_and_territories_boundaries"));
+
+            return dataSet;
         }
 
         static public Dictionary<string, CadastralObject> ParsingLand(XElement xdoc)
@@ -36,7 +42,7 @@ namespace CPT_Parser
                 var dataSection = construction.Element("object").Element("common_data");
                 parcel.type.Item1 = dataSection.Element("type").Element("code").Value;
                 parcel.type.Item1 = dataSection.Element("type").Element("value").Value;
-                parcel.cadNumber = dataSection.Element("cad_number").Value;
+                parcel.cadastralNumber = dataSection.Element("cad_number").Value;
 
                 if (construction.Element("object").Element("subtype") != null)
                 {
@@ -78,7 +84,7 @@ namespace CPT_Parser
                     var sptEl = construction.Element("contours_location").Element("contours").Element("contour").Element("entity_spatial");
                     parcel.spatial = ParsingSpatial(sptEl);
                 }
-                resList.Add(parcel.cadNumber, parcel);
+                resList.Add(parcel.cadastralNumber, parcel);
             }
             return resList;
         }
@@ -100,7 +106,7 @@ namespace CPT_Parser
                 var dataSection = buildEl.Element("object").Element("common_data");
                 build.type.Item1 = dataSection.Element("type").Element("code").Value;
                 build.type.Item2 = dataSection.Element("type").Element("value").Value;
-                build.cadNumber = dataSection.Element("cad_number").Value;
+                build.cadastralNumber = dataSection.Element("cad_number").Value;
 
                 build.area = double.Parse(buildEl.Element("params").Element("area").Value.Replace(".",","));//блок
                 build.purpose.Item1 = buildEl.Element("params").Element("purpose").Element("code").Value;
@@ -130,7 +136,7 @@ namespace CPT_Parser
                 build.cost = buildEl.Element("cost") != null ? 
                     double.Parse(buildEl.Element("cost").Element("value").Value.Replace(".", ",")) : 0;
 
-                resList.Add(build.cadNumber, build);
+                resList.Add(build.cadastralNumber, build);
             }
             return resList;
         }
@@ -139,16 +145,16 @@ namespace CPT_Parser
             var resList = new Dictionary<string, CadastralObject>();
             foreach (var constructionEl in xdoc.Element("construction_records").Elements("construction_record"))
             {
-                var construction = new Construction();
+                var construction = new ObjectRealty();
                 var dataSection = constructionEl.Element("object").Element("common_data");
                 construction.type.Item1 = dataSection.Element("type").Element("code").Value;
                 construction.type.Item2 = dataSection.Element("type").Element("value").Value;
-                construction.cadNumber = dataSection.Element("cad_number").Value;
+                construction.cadastralNumber = dataSection.Element("cad_number").Value;
 
                 construction.purpose.Item2 = constructionEl.Element("params").Element("purpose").Value;
                 var adrSection = constructionEl.Element("address_location").Element("address");
                 construction.adress = ParsingAdress(adrSection);
-                resList.Add(construction.cadNumber, construction);
+                resList.Add(construction.cadastralNumber, construction);
             }
             return resList;
         }

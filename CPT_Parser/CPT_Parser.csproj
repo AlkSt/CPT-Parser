@@ -56,10 +56,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SavedXMLFileDialog.cs" />
+    <Compile Include="Tools\SavedXMLToFile.cs" />
+    <Compile Include="Tools\Serializer.cs" />
     <Compile Include="Serialize\SerializableDictionary.cs" />
     <Compile Include="Serialize\SreializableKeyValue.cs" />
-    <Compile Include="TreeViewModel.cs" />
+    <Compile Include="ViewModel\TreeViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,15 +69,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data.cs" />
+    <Compile Include="Models\DataCadastralSet.cs" />
     <Compile Include="Models\Adress.cs" />
     <Compile Include="Models\Bound.cs" />
     <Compile Include="Models\Build.cs" />
     <Compile Include="Models\CadastralObject.cs" />
-    <Compile Include="Models\Construction.cs" />
+    <Compile Include="Models\ObjectRealty.cs" />
     <Compile Include="Models\SpatialData.cs" />
     <Compile Include="Models\Zone.cs" />
-    <Compile Include="Parseable.cs" />
+    <Compile Include="Tools\ParseXML.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

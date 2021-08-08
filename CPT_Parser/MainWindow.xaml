@@ -36,7 +36,8 @@
                   ItemContainerStyle="{StaticResource TreeViewItemStyle}"
                   ItemTemplate="{StaticResource CheckBoxItemTemplate}" />
         <TextBox Grid.Row="0" Grid.Column="2" Name ="DataTextBox" TextWrapping="Wrap" Margin="0, 15, 15, 0" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True"/>
-        <Button  Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content=" Сохранить объекты" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,25,0"  FontSize="16" Click="Button_Click"/>
+        <Button  Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content=" Просмотреть выбранные " VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0"  FontSize="16" Click="PresentButton_Click"/>
+        <Button  Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content=" Сохранить объекты " VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,25,0"  FontSize="16" Click="SaveButton_Click"/>
 
     </Grid>
 </Window>

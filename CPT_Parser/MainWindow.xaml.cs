@@ -25,80 +25,76 @@ namespace CPT_Parser
     public partial class MainWindow : Window
     {
         //Data class
-        internal Data elementsDataSet = new Data();
+        internal DataCadastralSet elementsDataSet;
         public MainWindow()
         {
+            elementsDataSet = new DataCadastralSet();
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Сохраенние всех выбранных объектов
+        /// </summary>
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             var treeEnumerator = treeElementsView.ItemsSource.GetEnumerator();
             treeEnumerator.MoveNext();
             var rootTreeElement = treeEnumerator.Current as TreeViewModel;
             var selectedNodes = TreeViewModel.GetSelectedChildElements(rootTreeElement);
-            string s = "Выбраны\r\n";
-            foreach (var item in selectedNodes)
-                s += item + "\r\n";
-            DataTextBox.Text = s;
-
-            SavedXMLFileDialog saved = new SavedXMLFileDialog();
-            if (selectedNodes.Count>0 && saved.SaveFileDialog())
+            SavedXMLToFile saved = new SavedXMLToFile();
+            if (selectedNodes.Count > 0 && saved.SaveFileDialog())
             {
-                SaveElemtnts(saved.FilePath, selectedNodes);
+                var serializer = new Serializer(elementsDataSet);
+                var serializedText = serializer.SerializeElemtnts(selectedNodes);
+                saved.SaveElemtnts(serializedText);
             }
         }
 
         /// <summary>
-        /// Сериализация и сохраннеие обьекта
+        /// Вывод идентификаторов у всех выбранных обьектов
         /// </summary>
-        /// <param name="filePath">путь сохранения</param>
-        /// <param name="selectedNodes">идентификаторы выбранных элементов</param>
-        private void SaveElemtnts(string filePath, List<List<string>> selectedNodes)
+        private void PresentButton_Click(object sender, RoutedEventArgs e)
         {
-            // получаем поток, куда будем записывать сериализованный объект
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.ConformanceLevel = ConformanceLevel.Auto;
-            settings.Indent = true;
-            using (XmlWriter writer = XmlWriter.Create(filePath, settings))
+            var treeEnumerator = treeElementsView.ItemsSource.GetEnumerator();
+            treeEnumerator.MoveNext();
+            var rootTreeElement = treeEnumerator.Current as TreeViewModel;
+            var selectedNodes = TreeViewModel.GetSelectedChildElements(rootTreeElement);
+            string s = "";
+            foreach (var group in selectedNodes)
             {
-                writer.WriteStartElement("CadastralObjects");
-                foreach (var cadastralElements in selectedNodes)
-                {
-                    Type elementsType = elementsDataSet.getObject(cadastralElements.First()).GetType();
-                    writer.WriteStartElement(elementsType.Name + "Objects");
-                    foreach (var elementId in cadastralElements)
-                    {
-                        var element = elementsDataSet.getObject(elementId);
-                        XmlSerializer formatter = new XmlSerializer(element.GetType());
-                        formatter.Serialize(writer, element);
-                    }
-                    writer.WriteEndElement();
-                }
-                writer.WriteEndElement();
+                s += elementsDataSet.GetObjectById(group.First()).GetType().Name + "\r\n";
+                foreach (var item in group)
+                    s += item + ";   ";
+                s += "\r\n";
             }
-        }
+            s = s.Length > 0 ? s : "Не выбрано ни одного обьекта";
+            MessageBox.Show(s);
 
+        }
+        /// <summary>
+        /// Добавление данных об обьектах в впредставление
+        /// </summary>>
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            treeElementsView.ItemsSource = TreeViewModel.SetTree("All cadastral objects" , elementsDataSet);           
-            
+            elementsDataSet = ParseXML.ParsingData();
+            treeElementsView.ItemsSource = TreeViewModel.SetTree("All cadastral objects", elementsDataSet);
+
         }
         /// <summary>
         /// Вывод содержимого узла при двоймно клике
         /// </summary>
-        /// <param name="sender">лейбл</param>
+        /// <param name="sender">Label</param>
         /// <param name="e"></param>
         private void ObjectElement_DoubleClickSelected(object sender, RoutedEventArgs e)
         {
             var tvItem = (Label)sender;
             try
             {
-                DataTextBox.Text = elementsDataSet.getObject(tvItem.Content.ToString()).ToString();
+                DataTextBox.Text = elementsDataSet.GetObjectById(tvItem.Content.ToString()).ToString();
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show("Для вывода информации выберите один объект, а не группу объектов", 
+                MessageBox.Show("Для вывода информации выберите один объект, а не группу объектов",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

@@ -1,13 +1,14 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CPT_Parser
 {
-    class SavedXMLFileDialog
+    class SavedXMLToFile
     {
         public string FilePath { get; set; }
 
@@ -25,10 +26,15 @@ namespace CPT_Parser
             return false;
         }
 
-        public void ShowMessage(string message)
+        public void SaveElemtnts(string text)
         {
-            //MessageBox.Show(message);
+            using (FileStream fileStream = File.Create(FilePath))
+            {
+                byte[] array = Encoding.Default.GetBytes(text);
+                fileStream.Write(array, 0, array.Length);
+            }
         }
+
 
     }
 }
