@@ -82,11 +82,11 @@ namespace CPT_Parser
 
             treeView.Add(rootItem);
 
-            TreeViewModel parcelItem = new TreeViewModel("Parcel");
-            TreeViewModel objectRealtyItem = new TreeViewModel("ObjectRealty");
-            TreeViewModel spatialDataItem = new TreeViewModel("SpatialData");
-            TreeViewModel boundItem = new TreeViewModel("Bound");
-            TreeViewModel zoneItem = new TreeViewModel("Zone");
+            TreeViewModel parcelItem = new TreeViewModel("Parcel/Земельные участки");
+            TreeViewModel objectRealtyItem = new TreeViewModel("ObjectRealty/Объекты недвижимости");
+            TreeViewModel spatialDataItem = new TreeViewModel("SpatialData/Пространственные данные");
+            TreeViewModel boundItem = new TreeViewModel("Bound/Границы");
+            TreeViewModel zoneItem = new TreeViewModel("Zone/Зоны");
             
             rootItem.Children.Add(parcelItem);
             InitItems(elementsDataSet.ParcelElenents, parcelItem);

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CPT_Parser
 {
@@ -12,6 +13,11 @@ namespace CPT_Parser
     {
         public string FilePath { get; set; }
 
+        private bool savedStatus;
+        public SavedXMLToFile()
+        {
+            savedStatus = false;
+        }
         public bool SaveFileDialog()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -28,13 +34,31 @@ namespace CPT_Parser
 
         public void SaveElemtnts(string text)
         {
-            using (FileStream fileStream = File.Create(FilePath))
+            try
             {
-                byte[] array = Encoding.Default.GetBytes(text);
-                fileStream.Write(array, 0, array.Length);
+                using (FileStream fileStream = File.Create(FilePath))
+                {
+                    byte[] array = Encoding.Default.GetBytes(text);
+                    fileStream.Write(array, 0, array.Length);
+                }
+                savedStatus = true;
             }
+            catch
+            {
+                savedStatus = false;
+            }
+            StatusMesage();
         }
 
+        private void StatusMesage()
+        {
+            if (savedStatus)
+                MessageBox.Show("Файл успешно сохранен", "Сохранение",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("Неизвестная ошибка. Обьекты не были сохранены.",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
 
     }
 }

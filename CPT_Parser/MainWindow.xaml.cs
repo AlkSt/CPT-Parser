@@ -25,7 +25,7 @@ namespace CPT_Parser
     public partial class MainWindow : Window
     {
         //Data class
-        internal DataCadastralSet elementsDataSet;
+        private DataCadastralSet elementsDataSet;
         public MainWindow()
         {
             elementsDataSet = new DataCadastralSet();
@@ -37,10 +37,8 @@ namespace CPT_Parser
         /// </summary>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            var treeEnumerator = treeElementsView.ItemsSource.GetEnumerator();
-            treeEnumerator.MoveNext();
-            var rootTreeElement = treeEnumerator.Current as TreeViewModel;
-            var selectedNodes = TreeViewModel.GetSelectedChildElements(rootTreeElement);
+            var selectedNodes = getSelectedNodes();
+
             SavedXMLToFile saved = new SavedXMLToFile();
             if (selectedNodes.Count > 0 && saved.SaveFileDialog())
             {
@@ -55,10 +53,8 @@ namespace CPT_Parser
         /// </summary>
         private void PresentButton_Click(object sender, RoutedEventArgs e)
         {
-            var treeEnumerator = treeElementsView.ItemsSource.GetEnumerator();
-            treeEnumerator.MoveNext();
-            var rootTreeElement = treeEnumerator.Current as TreeViewModel;
-            var selectedNodes = TreeViewModel.GetSelectedChildElements(rootTreeElement);
+            var selectedNodes = getSelectedNodes();
+
             string s = "";
             foreach (var group in selectedNodes)
             {
@@ -67,9 +63,25 @@ namespace CPT_Parser
                     s += item + ";   ";
                 s += "\r\n";
             }
-            s = s.Length > 0 ? s : "Не выбрано ни одного обьекта";
-            MessageBox.Show(s);
+            s = s.Length > 0 ? s : "Не выбрано ни одного объекта";
 
+            MessageBox.Show(s,"Выбранные объекты", MessageBoxButton.OK, MessageBoxImage.None);
+
+        }
+
+        /// <summary>
+        /// Получение выбранных узлов из дерева
+        /// </summary>
+        /// <returns></returns>
+        private List<List<string>> getSelectedNodes()
+        {
+            var treeEnumerator = treeElementsView.ItemsSource.GetEnumerator();
+            treeEnumerator.MoveNext();
+
+            var rootTreeElement = treeEnumerator.Current as TreeViewModel;
+            var selectedNodes = TreeViewModel.GetSelectedChildElements(rootTreeElement);
+
+            return selectedNodes;
         }
         /// <summary>
         /// Добавление данных об обьектах в впредставление
@@ -77,7 +89,7 @@ namespace CPT_Parser
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             elementsDataSet = ParseXML.ParsingData();
-            treeElementsView.ItemsSource = TreeViewModel.SetTree("All cadastral objects", elementsDataSet);
+            treeElementsView.ItemsSource = TreeViewModel.SetTree("Все объекты", elementsDataSet);
 
         }
         /// <summary>
@@ -91,6 +103,7 @@ namespace CPT_Parser
             try
             {
                 DataTextBox.Text = elementsDataSet.GetObjectById(tvItem.Content.ToString()).ToString();
+                DataTextBox.ScrollToHome();
             }
             catch (NullReferenceException)
             {
